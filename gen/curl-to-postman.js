@@ -323,7 +323,7 @@ class CurlToPostmanGenerator {
   parseUrl(urlString) {
     // Convert environment variables
     const processedUrl = urlString
-      .replace(/\$DEVREV_TOKEN/g, "{{aat}}")
+      .replace(/{{DEVREV_TOKEN}}/g, "{{aat}}")
       .replace(/\$(\w+)/g, "{{$1}}");
 
     // Parse URL components

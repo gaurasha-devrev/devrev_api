@@ -1,9 +1,9 @@
 #!/bin/bash
 # List all parts
 
-curl -X GET "https://api.devrev.ai/parts.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/parts.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/parts.list?limit=20&type=product" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/parts.list?limit=20&type=product" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

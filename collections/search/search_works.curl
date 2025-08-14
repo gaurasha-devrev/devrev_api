@@ -1,8 +1,8 @@
 #!/bin/bash
 # Search specifically for work items
 
-curl -X POST "https://api.devrev.ai/search.query" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/search.query" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "query": "login issue",

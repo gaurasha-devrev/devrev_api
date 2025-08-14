@@ -1,11 +1,11 @@
 #!/bin/bash
 # Update artifact metadata
 
-curl -X POST "https://api.devrev.ai/artifacts.update" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/artifacts.update" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$ARTIFACT_ID'",
+    "id": "{{artifact_id}}",
     "file": {
       "description": "[UPDATED] Updated description for test document - now includes additional context and metadata"
     }

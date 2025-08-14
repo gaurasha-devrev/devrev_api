@@ -1,9 +1,9 @@
 #!/bin/bash
 # Delete/revoke an authentication token
 
-curl -X POST "https://api.devrev.ai/auth-tokens.delete" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/auth-tokens.delete" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$TOKEN_ID'"
+    "id": "{{token_id}}"
   }'

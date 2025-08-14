@@ -1,8 +1,8 @@
 #!/bin/bash
 # Create a new DevRev account
 
-curl -X POST "https://api.devrev.ai/accounts.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/accounts.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "display_name": "Test Account",

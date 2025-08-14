@@ -1,9 +1,9 @@
 #!/bin/bash
 # Delete a tag
 
-curl -X POST "https://api.devrev.ai/tags.delete" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/tags.delete" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$TAG_ID'"
+    "id": "{{tag_id}}"
   }'

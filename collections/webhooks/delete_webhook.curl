@@ -1,9 +1,9 @@
 #!/bin/bash
 # Delete webhook permanently
 
-curl -X POST "https://api.devrev.ai/webhooks.delete" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/webhooks.delete" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$WEBHOOK_ID'"
+    "id": "{{webhook_id}}"
   }'

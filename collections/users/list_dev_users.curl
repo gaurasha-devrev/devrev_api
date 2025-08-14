@@ -1,9 +1,9 @@
 #!/bin/bash
 # List all dev users
 
-curl -X GET "https://api.devrev.ai/dev-users.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/dev-users.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/dev-users.list?limit=20&email=test@example.com" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/dev-users.list?limit=20&email=test@example.com" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

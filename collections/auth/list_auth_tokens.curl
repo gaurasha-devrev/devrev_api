@@ -1,9 +1,9 @@
 #!/bin/bash
 # List all authentication tokens
 
-curl -X GET "https://api.devrev.ai/auth-tokens.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/auth-tokens.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/auth-tokens.list?limit=20&is_active=true" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/auth-tokens.list?limit=20&is_active=true" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

@@ -1,11 +1,11 @@
 #!/bin/bash
 # Update an existing account
 
-curl -X POST "https://api.devrev.ai/accounts.update" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/accounts.update" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$ACCOUNT_ID'",
+    "id": "{{account_id}}",
     "description": "Updated test account description",
     "websites": ["https://www.updated-testcompany.com"]
   }'

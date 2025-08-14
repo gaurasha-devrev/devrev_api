@@ -1,13 +1,13 @@
 #!/bin/bash
 # List conversations with optional filters
 
-curl -X GET "https://api.devrev.ai/conversations.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/conversations.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/conversations.list?limit=20&applies_to_part=$PART_ID" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/conversations.list?limit=20&applies_to_part={{part_id}}" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # Filter by member:
-# curl -X GET "https://api.devrev.ai/conversations.list?limit=20&members=$REV_USER_ID" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/conversations.list?limit=20&members={{rev_user_id}}" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Create a work-focused webhook
 
-curl -X POST "https://api.devrev.ai/webhooks.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/webhooks.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "url": "https://work-tracker.example.com/hooks/work-updates",

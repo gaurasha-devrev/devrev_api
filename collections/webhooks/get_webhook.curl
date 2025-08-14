@@ -1,5 +1,5 @@
 #!/bin/bash
 # Get webhook details by ID
 
-curl -X GET "https://api.devrev.ai/webhooks.get?id=$WEBHOOK_ID" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/webhooks.get?id={{webhook_id}}" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"

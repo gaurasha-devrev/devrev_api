@@ -1,9 +1,9 @@
 #!/bin/bash
 # List all accounts with optional filtering
 
-curl -X GET "https://api.devrev.ai/accounts.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/accounts.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/accounts.list?limit=20&created_date.after=2024-01-01" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/accounts.list?limit=20&created_date.after=2024-01-01" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

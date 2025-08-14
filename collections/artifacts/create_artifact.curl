@@ -1,8 +1,8 @@
 #!/bin/bash
 # Create a new artifact (file/document)
 
-curl -X POST "https://api.devrev.ai/artifacts.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/artifacts.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "file": {
@@ -11,6 +11,6 @@ curl -X POST "https://api.devrev.ai/artifacts.create" \
       "size": 1024,
       "description": "Test document created via API for artifact management demo"
     },
-    "tags": ["'$TAG_ID'"],
-    "applies_to": "'$WORK_ID'"
+    "tags": ["{{tag_id}}"],
+    "applies_to": "{{work_id}}"
   }'

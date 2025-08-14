@@ -1,11 +1,11 @@
 #!/bin/bash
 # Create a timeline entry (status update)
 
-curl -X POST "https://api.devrev.ai/timeline-entries.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/timeline-entries.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "object": "'$WORK_ID'",
+    "object": "{{work_id}}",
     "body": "**Status Update**\n\n🔄 **Progress Update:**\n- Completed initial analysis\n- Identified root cause\n- Started implementation\n\n📊 **Next Steps:**\n1. Complete code changes\n2. Run tests\n3. Deploy to staging\n\n⏱️ **ETA:** End of week",
     "type": "timeline_update",
     "visibility": "public"

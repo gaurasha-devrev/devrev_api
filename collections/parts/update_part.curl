@@ -1,10 +1,10 @@
 #!/bin/bash
 # Update an existing part
 
-curl -X POST "https://api.devrev.ai/parts.update" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/parts.update" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$PART_ID'",
+    "id": "{{part_id}}",
     "description": "Updated test product description"
   }'

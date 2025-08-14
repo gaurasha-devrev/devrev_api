@@ -1,11 +1,11 @@
 #!/bin/bash
 # Create a timeline entry (comment)
 
-curl -X POST "https://api.devrev.ai/timeline-entries.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/timeline-entries.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "object": "'$WORK_ID'",
+    "object": "{{work_id}}",
     "body": "**Comment added via API**\n\nThis is a test comment with:\n- Rich text formatting\n- Multiple bullet points\n- Timestamps and context\n\n> This comment demonstrates the timeline entry functionality for tracking communication and updates on work items.",
     "type": "timeline_comment",
     "visibility": "public"

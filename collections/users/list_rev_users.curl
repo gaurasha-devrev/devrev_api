@@ -1,9 +1,9 @@
 #!/bin/bash
 # List all rev users
 
-curl -X GET "https://api.devrev.ai/rev-users.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/rev-users.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering by account (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/rev-users.list?limit=20&account_id=$ACCOUNT_ID" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/rev-users.list?limit=20&account_id={{account_id}}" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

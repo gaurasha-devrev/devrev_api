@@ -1,8 +1,8 @@
 #!/bin/bash
 # Create a new dev user (developer)
 
-curl -X POST "https://api.devrev.ai/dev-users.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/dev-users.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "email": "developer@example.com",

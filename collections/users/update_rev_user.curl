@@ -1,11 +1,11 @@
 #!/bin/bash
 # Update rev user details
 
-curl -X POST "https://api.devrev.ai/rev-users.update" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/rev-users.update" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$REV_USER_ID'",
+    "id": "{{rev_user_id}}",
     "full_name": "Updated Customer Name",
     "display_name": "UpdatedCustomer",
     "phone_numbers": ["+1-555-333-4444"]

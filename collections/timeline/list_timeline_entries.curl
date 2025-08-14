@@ -1,13 +1,13 @@
 #!/bin/bash
 # List timeline entries for a work item
 
-curl -X GET "https://api.devrev.ai/timeline-entries.list?object=$WORK_ID&limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/timeline-entries.list?object={{work_id}}&limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # List all timeline entries:
-# curl -X GET "https://api.devrev.ai/timeline-entries.list?limit=50" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/timeline-entries.list?limit=50" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/timeline-entries.list?object=$WORK_ID&type=timeline_comment" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/timeline-entries.list?object={{work_id}}&type=timeline_comment" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

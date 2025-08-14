@@ -195,7 +195,7 @@ export DEVREV_TOKEN_PROD="prod_token"
 export DEVREV_TOKEN_STAGING="staging_token"
 
 # Use staging
-export DEVREV_TOKEN=$DEVREV_TOKEN_STAGING
+export DEVREV_TOKEN="your_staging_token_here"
 ./create_account.curl
 ```
 

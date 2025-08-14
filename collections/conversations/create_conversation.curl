@@ -1,16 +1,16 @@
 #!/bin/bash
 # Create a new conversation
 
-curl -X POST "https://api.devrev.ai/conversations.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/conversations.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Test Support Conversation",
     "description": "Test conversation created via API for customer support",
-    "applies_to_part": "'$PART_ID'",
+    "applies_to_part": "{{part_id}}",
     "members": [
-      "'$DEV_USER_ID'",
-      "'$REV_USER_ID'"
+      "{{dev_user_id}}",
+      "{{rev_user_id}}"
     ],
-    "tags": ["'$TAG_ID'"]
+    "tags": ["{{tag_id}}"]
   }'

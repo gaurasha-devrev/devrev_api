@@ -1,13 +1,13 @@
 #!/bin/bash
 # List rev organizations
 
-curl -X GET "https://api.devrev.ai/rev-orgs.list?limit=20" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/rev-orgs.list?limit=20" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # With filtering (uncomment and modify as needed):
-# curl -X GET "https://api.devrev.ai/rev-orgs.list?limit=20&account=$ACCOUNT_ID" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/rev-orgs.list?limit=20&account={{account_id}}" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"
 
 # Filter by environment:
-# curl -X GET "https://api.devrev.ai/rev-orgs.list?limit=20&environment=production" \
-#   -H "Authorization: Bearer $DEVREV_TOKEN"
+# curl -X GET "https://{{base_url}}/rev-orgs.list?limit=20&environment=production" \
+#   -H "Authorization: Bearer {{DEVREV_TOKEN}}"

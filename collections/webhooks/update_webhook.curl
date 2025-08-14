@@ -1,11 +1,11 @@
 #!/bin/bash
 # Update webhook configuration
 
-curl -X POST "https://api.devrev.ai/webhooks.update" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/webhooks.update" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$WEBHOOK_ID'",
+    "id": "{{webhook_id}}",
     "description": "[UPDATED] Enhanced webhook with additional event types",
     "event_types": [
       "work_created",

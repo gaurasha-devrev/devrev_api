@@ -1,11 +1,11 @@
 #!/bin/bash
 # Update an existing tag
 
-curl -X POST "https://api.devrev.ai/tags.update" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/tags.update" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "id": "'$TAG_ID'",
+    "id": "{{tag_id}}",
     "description": "[UPDATED] This tag has been updated via API",
     "color": "#e74c3c"
   }'

@@ -1,8 +1,8 @@
 #!/bin/bash
 # Create an image artifact
 
-curl -X POST "https://api.devrev.ai/artifacts.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/artifacts.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "file": {
@@ -11,5 +11,5 @@ curl -X POST "https://api.devrev.ai/artifacts.create" \
       "size": 245760,
       "description": "Screenshot showing the issue described in the work item"
     },
-    "applies_to": "'$WORK_ID'"
+    "applies_to": "{{work_id}}"
   }'

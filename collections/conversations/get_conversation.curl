@@ -1,5 +1,5 @@
 #!/bin/bash
 # Get conversation details by ID
 
-curl -X GET "https://api.devrev.ai/conversations.get?id=$CONVERSATION_ID" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/conversations.get?id={{conversation_id}}" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"

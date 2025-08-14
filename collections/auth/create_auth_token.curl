@@ -1,11 +1,56 @@
 #!/bin/bash
 # Create a new authentication token
+# API Reference: https://developer.devrev.ai/beta/api-reference/auth-tokens/create
 
-curl -X POST "https://api.devrev.ai/auth-tokens.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/auth-tokens.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
-    "display_name": "API Test Token",
-    "expires_at": "2024-12-31T23:59:59.000Z",
-    "scopes": ["read", "write"]
+    "grant_type": "urn:devrev:params:oauth:grant-type:token-issue",
+    "expires_in": 30,
+    "scope": "read write"
+    
+    // Optional parameters (uncomment and modify as needed):
+    
+    // "act_as": "{{dev_user_id}}",
+    // Description: The unique ID of the Dev user or service account to impersonate
+    // Format: "id"
+    
+    // "aud": ["https://api.devrev.ai", "{{base_url}}"],
+    // Description: The expected audience values with respect to the token
+    // Type: list of strings
+    
+    // "client_id": "my-app-client-{{$timestamp}}",
+    // Description: An identifier that represents the application requesting the token
+    // Format: "text"
+    // Note: If not provided, DevRev will generate a client_id for AAT
+    
+    // "requested_token_type": "urn:devrev:params:oauth:token-type:aat",
+    // Description: The type of the requested token
+    // Options: urn:devrev:params:oauth:token-type:aat, urn:devrev:params:oauth:token-type:pat, etc.
+    
+    // "rev_info": {
+    //   "display_name": "Test Rev User",
+    //   "email": "test@example.com"
+    // },
+    // Description: Info for Rev user provisioning/Rev session token
+    
+    // "subject_token": "existing_token_value",
+    // Description: Entity that requests the token (not required for AAT)
+    // Format: "text"
+    
+    // "subject_token_type": "urn:ietf:params:oauth:token-type:access_token",
+    // Description: The type of the subject token
+    
+    // "token_hint": "api-integration-token"
+    // Description: A hint that identifies the token
+    // Format: "text"
   }'
+
+# Response will include:
+# - access_token: The issued JWT
+# - expires_in: Validity lifetime in seconds since Unix epoch  
+# - token_type: "bearer"
+# - client_id: Application identifier (for AAT)
+# - refresh_token: Token to refresh the issued token
+# - scope: Associated scopes

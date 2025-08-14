@@ -1,5 +1,5 @@
 #!/bin/bash
 # Get current dev organization details
 
-curl -X GET "https://api.devrev.ai/dev-orgs.get" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/dev-orgs.get" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"

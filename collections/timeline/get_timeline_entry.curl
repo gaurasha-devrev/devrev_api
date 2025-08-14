@@ -1,5 +1,5 @@
 #!/bin/bash
 # Get timeline entry details by ID
 
-curl -X GET "https://api.devrev.ai/timeline-entries.get?id=$TIMELINE_ENTRY_ID" \
-  -H "Authorization: Bearer $DEVREV_TOKEN"
+curl -X GET "https://{{base_url}}/timeline-entries.get?id={{timeline_entry_id}}" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}"

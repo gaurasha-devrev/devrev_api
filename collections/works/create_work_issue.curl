@@ -1,8 +1,8 @@
 #!/bin/bash
 # Create a new work item (issue/bug)
 
-curl -X POST "https://api.devrev.ai/works.create" \
-  -H "Authorization: Bearer $DEVREV_TOKEN" \
+curl -X POST "https://{{base_url}}/works.create" \
+  -H "Authorization: Bearer {{DEVREV_TOKEN}}" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "Login system bug",
@@ -12,7 +12,7 @@ curl -X POST "https://api.devrev.ai/works.create" \
     "stage": {
       "name": "triage"
     },
-    "applies_to_part": "'$PART_ID'",
-    "owned_by": ["'$DEV_USER_ID'"],
-    "reported_by": ["'$REV_USER_ID'"]
+    "applies_to_part": "{{part_id}}",
+    "owned_by": ["{{dev_user_id}}"],
+    "reported_by": ["{{rev_user_id}}"]
   }'
