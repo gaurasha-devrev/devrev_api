@@ -1,0 +1,15 @@
+#!/bin/bash
+# Advanced search with filters
+
+curl -X POST "https://api.devrev.ai/search.query" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "urgent",
+    "types": ["issue", "ticket"],
+    "filters": {
+      "priority": ["p0", "p1"],
+      "stage": ["in_progress", "triage"]
+    },
+    "limit": 25
+  }'

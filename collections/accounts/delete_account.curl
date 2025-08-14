@@ -1,0 +1,9 @@
+#!/bin/bash
+# Delete an account
+
+curl -X POST "https://api.devrev.ai/accounts.delete" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$ACCOUNT_ID'"
+  }'

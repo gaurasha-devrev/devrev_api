@@ -1,0 +1,13 @@
+#!/bin/bash
+# Create a new rev user (customer)
+
+curl -X POST "https://api.devrev.ai/rev-users.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "customer@example.com",
+    "full_name": "Test Customer",
+    "display_name": "CustomerTest",
+    "account_id": "'$ACCOUNT_ID'",
+    "phone_numbers": ["+1-555-987-6543"]
+  }'

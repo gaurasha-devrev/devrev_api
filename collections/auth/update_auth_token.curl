@@ -1,0 +1,11 @@
+#!/bin/bash
+# Update authentication token
+
+curl -X POST "https://api.devrev.ai/auth-tokens.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$TOKEN_ID'",
+    "display_name": "Updated API Token",
+    "expires_at": "2025-12-31T23:59:59.000Z"
+  }'

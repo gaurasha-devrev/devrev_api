@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "g5h6i7j8-9abc-def0-1234-567890123456",
+		"name": "DevRev - Organizations API",
+		"description": "Collection for DevRev Organizations API operations - Dev Orgs and Rev Orgs management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Dev Organizations",
+			"item": [
+				{
+					"name": "Get Dev Organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.dev_org) {",
+									"        pm.environment.set('dev_org_id', response.dev_org.id);",
+									"        pm.environment.set('dev_org_display_id', response.dev_org.display_id);",
+									"        console.log('Dev Org ID:', response.dev_org.id);",
+									"        console.log('Dev Org Name:', response.dev_org.display_name);",
+									"    }",
+									"} else {",
+									"    console.log('Failed to get dev org:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/dev-orgs.get",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-orgs.get"
+							]
+						},
+						"description": "Retrieves the current dev organization details"
+					}
+				},
+				{
+					"name": "List Dev Organizations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.dev_orgs && response.dev_orgs.length > 0) {",
+									"        console.log('Found', response.dev_orgs.length, 'dev organizations');",
+									"        pm.environment.set('first_dev_org_id', response.dev_orgs[0].id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/dev-orgs.list?limit=10",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-orgs.list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10",
+									"description": "Maximum number of dev orgs to return"
+								}
+							]
+						},
+						"description": "Lists all accessible dev organizations"
+					}
+				},
+				{
+					"name": "Update Dev Organization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{dev_org_id}}\",\n  \"display_name\": \"Updated Dev Organization {{$timestamp}}\",\n  \"description\": \"Development organization updated via API on {{$timestamp}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/dev-orgs.update",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-orgs.update"
+							]
+						},
+						"description": "Updates dev organization details"
+					}
+				}
+			],
+			"description": "Operations for Dev Organizations (development teams and companies)"
+		},
+		{
+			"name": "Rev Organizations",
+			"item": [
+				{
+					"name": "Create Rev Organization",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.rev_org) {",
+									"        pm.environment.set('rev_org_id', response.rev_org.id);",
+									"        pm.environment.set('rev_org_display_id', response.rev_org.display_id);",
+									"        console.log('Rev Org created with ID:', response.rev_org.id);",
+									"        console.log('Rev Org Name:', response.rev_org.display_name);",
+									"    }",
+									"} else {",
+									"    console.log('Rev Org creation failed:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"display_name\": \"{{$randomCompanyName}} Customer Organization\",\n  \"description\": \"Customer organization created via API on {{$timestamp}} for testing purposes\",\n  \"account\": \"{{account_id}}\",\n  \"environment\": \"production\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/rev-orgs.create",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-orgs.create"
+							]
+						},
+						"description": "Creates a new Rev Organization (customer organization)"
+					}
+				},
+				{
+					"name": "Get Rev Organization by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/rev-orgs.get?id={{rev_org_id}}",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-orgs.get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{rev_org_id}}",
+									"description": "Rev organization ID"
+								}
+							]
+						},
+						"description": "Retrieves Rev Organization details by ID"
+					}
+				},
+				{
+					"name": "List Rev Organizations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.rev_orgs && response.rev_orgs.length > 0) {",
+									"        console.log('Found', response.rev_orgs.length, 'rev organizations');",
+									"        const environments = response.rev_orgs.map(org => org.environment);",
+									"        console.log('Environments:', [...new Set(environments)].join(', '));",
+									"        pm.environment.set('first_rev_org_id', response.rev_orgs[0].id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/rev-orgs.list?limit=20",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-orgs.list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "20",
+									"description": "Maximum number of rev orgs to return"
+								},
+								{
+									"key": "account",
+									"value": "",
+									"description": "Filter by account ID",
+									"disabled": true
+								},
+								{
+									"key": "environment",
+									"value": "",
+									"description": "Filter by environment (production, staging, etc.)",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Lists Rev Organizations with optional filtering"
+					}
+				},
+				{
+					"name": "Update Rev Organization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{rev_org_id}}\",\n  \"display_name\": \"[UPDATED] {{$randomCompanyName}} Customer Org\",\n  \"description\": \"Customer organization updated via API on {{$timestamp}} with new information and settings\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/rev-orgs.update",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-orgs.update"
+							]
+						},
+						"description": "Updates Rev Organization details"
+					}
+				},
+				{
+					"name": "Delete Rev Organization",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{rev_org_id}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/rev-orgs.delete",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-orgs.delete"
+							]
+						},
+						"description": "Deletes a Rev Organization"
+					}
+				}
+			],
+			"description": "Operations for Rev Organizations (customer organizations)"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script for the entire collection",
+					"console.log('DevRev Organizations API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Post-response script for the entire collection",
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

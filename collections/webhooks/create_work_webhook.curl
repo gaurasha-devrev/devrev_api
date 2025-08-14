@@ -1,0 +1,21 @@
+#!/bin/bash
+# Create a work-focused webhook
+
+curl -X POST "https://api.devrev.ai/webhooks.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://work-tracker.example.com/hooks/work-updates",
+    "event_types": [
+      "work_created",
+      "work_updated",
+      "work_stage_updated",
+      "work_priority_updated"
+    ],
+    "description": "Work item tracking webhook for project management integration",
+    "filters": {
+      "work_types": ["issue", "ticket"],
+      "priorities": ["p0", "p1"]
+    },
+    "enabled": true
+  }'

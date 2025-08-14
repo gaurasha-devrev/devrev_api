@@ -1,0 +1,237 @@
+{
+	"info": {
+		"_postman_id": "d4e5f6g7-h8i9-0123-defg-456789012345",
+		"name": "DevRev - Authentication API",
+		"description": "Collection for DevRev Authentication and Auth Tokens API operations",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Create Auth Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.access_token) {",
+							"        pm.environment.set('aat', response.access_token);",
+							"        pm.environment.set('token_id', response.id);",
+							"        pm.environment.set('auth_token', response.access_token);",
+							"        console.log('Auth token created successfully');",
+							"        console.log('Token ID:', response.id);",
+							"    }",
+							"} else {",
+							"    console.log('Auth token creation failed:', pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"display_name\": \"API Test Token - {{$timestamp}}\",\n  \"expires_at\": \"2024-12-31T23:59:59.000Z\",\n  \"scopes\": [\"read\", \"write\"]\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.create"
+					]
+				},
+				"description": "Creates a new authentication token"
+			}
+		},
+		{
+			"name": "Get Auth Token",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.get?id={{token_id}}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{token_id}}",
+							"description": "Auth token ID"
+						}
+					]
+				},
+				"description": "Retrieves auth token details by ID"
+			}
+		},
+		{
+			"name": "List Auth Tokens",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.auth_tokens && response.auth_tokens.length > 0) {",
+							"        pm.environment.set('first_token_id', response.auth_tokens[0].id);",
+							"        console.log('Found', response.auth_tokens.length, 'auth tokens');",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.list?limit=10",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.list"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						}
+					]
+				},
+				"description": "Lists all auth tokens"
+			}
+		},
+		{
+			"name": "Update Auth Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{token_id}}\",\n  \"display_name\": \"Updated API Token - {{$timestamp}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.update",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.update"
+					]
+				},
+				"description": "Updates an existing auth token"
+			}
+		},
+		{
+			"name": "Delete Auth Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{token_id}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.delete"
+					]
+				},
+				"description": "Deletes an auth token"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('DevRev Auth API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

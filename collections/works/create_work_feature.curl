@@ -1,0 +1,17 @@
+#!/bin/bash
+# Create a new work item (feature request)
+
+curl -X POST "https://api.devrev.ai/works.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Feature: Enhanced user dashboard",
+    "body": "**Feature Description:**\nThis is a test feature request created via API\n\n**User Story:**\nAs a user, I want to see enhanced dashboard with better visualization\n\n**Acceptance Criteria:**\n- [ ] Criterion 1\n- [ ] Criterion 2\n- [ ] Criterion 3\n\n**Additional Notes:**\nAny additional context or requirements",
+    "type": "feature",
+    "priority": "p3",
+    "stage": {
+      "name": "backlog"
+    },
+    "applies_to_part": "'$PART_ID'",
+    "owned_by": ["'$DEV_USER_ID'"]
+  }'

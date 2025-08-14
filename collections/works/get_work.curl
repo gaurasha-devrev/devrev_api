@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get work item details by ID
+
+curl -X GET "https://api.devrev.ai/works.get?id=$WORK_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

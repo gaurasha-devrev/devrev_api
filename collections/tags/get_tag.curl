@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get tag details by ID
+
+curl -X GET "https://api.devrev.ai/tags.get?id=$TAG_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

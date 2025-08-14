@@ -1,0 +1,391 @@
+{
+	"info": {
+		"_postman_id": "c3d4e5f6-g7h8-9012-cdef-345678901234",
+		"name": "DevRev - Users API",
+		"description": "Collection for DevRev Users API operations (Dev Users and Rev Users) with variable chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Dev Users",
+			"item": [
+				{
+					"name": "Create Dev User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.dev_user) {",
+									"        pm.environment.set('dev_user_id', response.dev_user.id);",
+									"        pm.environment.set('dev_user_display_id', response.dev_user.display_id);",
+									"        pm.environment.set('dev_user_email', response.dev_user.email);",
+									"        console.log('Dev user created with ID:', response.dev_user.id);",
+									"    }",
+									"} else {",
+									"    console.log('Dev user creation failed:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"full_name\": \"{{$randomFullName}}\",\n  \"display_name\": \"{{$randomFirstName}} {{$randomLastName}}\",\n  \"phone\": \"{{$randomPhoneNumber}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/dev-users.create",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-users.create"
+							]
+						},
+						"description": "Creates a new developer user"
+					}
+				},
+				{
+					"name": "Get Dev User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/dev-users.get?id={{dev_user_id}}",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-users.get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{dev_user_id}}",
+									"description": "Dev user ID"
+								}
+							]
+						},
+						"description": "Retrieves dev user details by ID"
+					}
+				},
+				{
+					"name": "List Dev Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.dev_users && response.dev_users.length > 0) {",
+									"        pm.environment.set('first_dev_user_id', response.dev_users[0].id);",
+									"        console.log('Found', response.dev_users.length, 'dev users');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/dev-users.list?limit=10",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-users.list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "cursor",
+									"value": "",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Lists all dev users"
+					}
+				},
+				{
+					"name": "Update Dev User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{dev_user_id}}\",\n  \"display_name\": \"Updated {{$randomFirstName}}\",\n  \"phone\": \"{{$randomPhoneNumber}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/dev-users.update",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"dev-users.update"
+							]
+						},
+						"description": "Updates an existing dev user"
+					}
+				}
+			],
+			"description": "Operations for managing developer users"
+		},
+		{
+			"name": "Rev Users",
+			"item": [
+				{
+					"name": "Create Rev User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.rev_user) {",
+									"        pm.environment.set('rev_user_id', response.rev_user.id);",
+									"        pm.environment.set('rev_user_display_id', response.rev_user.display_id);",
+									"        pm.environment.set('rev_user_email', response.rev_user.email);",
+									"        console.log('Rev user created with ID:', response.rev_user.id);",
+									"    }",
+									"} else {",
+									"    console.log('Rev user creation failed:', pm.response.text());",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{$randomEmail}}\",\n  \"full_name\": \"{{$randomFullName}}\",\n  \"display_name\": \"{{$randomFirstName}} {{$randomLastName}}\",\n  \"phone\": \"{{$randomPhoneNumber}}\",\n  \"account_id\": \"{{account_id}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/rev-users.create",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-users.create"
+							]
+						},
+						"description": "Creates a new customer/revenue user"
+					}
+				},
+				{
+					"name": "Get Rev User by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/rev-users.get?id={{rev_user_id}}",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-users.get"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{rev_user_id}}",
+									"description": "Rev user ID"
+								}
+							]
+						},
+						"description": "Retrieves rev user details by ID"
+					}
+				},
+				{
+					"name": "List Rev Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.rev_users && response.rev_users.length > 0) {",
+									"        pm.environment.set('first_rev_user_id', response.rev_users[0].id);",
+									"        console.log('Found', response.rev_users.length, 'rev users');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://{{base_url}}/rev-users.list?limit=10",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-users.list"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								},
+								{
+									"key": "account_id",
+									"value": "{{account_id}}",
+									"description": "Filter by account ID",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Lists all rev users"
+					}
+				},
+				{
+					"name": "Update Rev User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{aat}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id\": \"{{rev_user_id}}\",\n  \"display_name\": \"Updated {{$randomFirstName}}\",\n  \"phone\": \"{{$randomPhoneNumber}}\"\n}"
+						},
+						"url": {
+							"raw": "https://{{base_url}}/rev-users.update",
+							"protocol": "https",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"rev-users.update"
+							]
+						},
+						"description": "Updates an existing rev user"
+					}
+				}
+			],
+			"description": "Operations for managing customer/revenue users"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('DevRev Users API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

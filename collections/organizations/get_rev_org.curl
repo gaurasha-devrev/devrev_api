@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get rev organization details by ID
+
+curl -X GET "https://api.devrev.ai/rev-orgs.get?id=$REV_ORG_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

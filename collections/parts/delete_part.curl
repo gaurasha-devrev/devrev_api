@@ -1,0 +1,9 @@
+#!/bin/bash
+# Delete a part
+
+curl -X POST "https://api.devrev.ai/parts.delete" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$PART_ID'"
+  }'

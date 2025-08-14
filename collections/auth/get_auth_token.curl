@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get authentication token details by ID
+
+curl -X GET "https://api.devrev.ai/auth-tokens.get?id=$TOKEN_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

@@ -1,0 +1,5 @@
+#!/bin/bash
+# List dev organizations
+
+curl -X GET "https://api.devrev.ai/dev-orgs.list?limit=10" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

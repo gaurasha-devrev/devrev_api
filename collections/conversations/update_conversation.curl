@@ -1,0 +1,11 @@
+#!/bin/bash
+# Update an existing conversation
+
+curl -X POST "https://api.devrev.ai/conversations.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$CONVERSATION_ID'",
+    "title": "[UPDATED] Enhanced Support Conversation",
+    "description": "Updated conversation description with additional context"
+  }'

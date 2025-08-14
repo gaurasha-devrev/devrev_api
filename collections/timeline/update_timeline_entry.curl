@@ -1,0 +1,10 @@
+#!/bin/bash
+# Update a timeline entry
+
+curl -X POST "https://api.devrev.ai/timeline-entries.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$TIMELINE_ENTRY_ID'",
+    "body": "[EDITED] **Updated Comment**\n\nThis comment has been edited to include additional information:\n- New insights discovered\n- Additional context provided\n- Corrections made to original post\n\n> Original timestamp preserved, edit timestamp added"
+  }'

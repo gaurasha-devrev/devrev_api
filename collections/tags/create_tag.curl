@@ -1,0 +1,11 @@
+#!/bin/bash
+# Create a new tag
+
+curl -X POST "https://api.devrev.ai/tags.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "test-tag",
+    "description": "Test tag created via API for categorization and labeling",
+    "color": "#3498db"
+  }'

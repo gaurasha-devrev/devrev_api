@@ -1,0 +1,15 @@
+#!/bin/bash
+# Update an existing work item
+
+curl -X POST "https://api.devrev.ai/works.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$WORK_ID'",
+    "title": "[UPDATED] Enhanced issue title",
+    "priority": "p1",
+    "stage": {
+      "name": "in_progress"
+    },
+    "body": "**Updated description**\n\nThis work item has been updated via API."
+  }'

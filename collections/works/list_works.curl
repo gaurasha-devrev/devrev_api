@@ -1,0 +1,13 @@
+#!/bin/bash
+# List work items with optional filters
+
+curl -X GET "https://api.devrev.ai/works.list?limit=20&type=issue,ticket,feature" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"
+
+# With additional filtering (uncomment and modify as needed):
+# curl -X GET "https://api.devrev.ai/works.list?limit=20&type=issue&priority=p0,p1&stage.name=triage" \
+#   -H "Authorization: Bearer $DEVREV_TOKEN"
+
+# Filter by part:
+# curl -X GET "https://api.devrev.ai/works.list?limit=20&applies_to_part=$PART_ID" \
+#   -H "Authorization: Bearer $DEVREV_TOKEN"

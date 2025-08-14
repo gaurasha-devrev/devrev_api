@@ -1,0 +1,20 @@
+{
+  "name": "devrev-api-collections",
+  "version": "1.0.0",
+  "description": "DevRev API Postman Collections Generator",
+  "main": "gen/generate-combined-collection.js",
+  "scripts": {
+    "generate": "node gen/generate-combined-collection.js",
+    "build": "npm run generate"
+  },
+  "keywords": ["devrev", "api", "postman", "collections"],
+  "author": "DevRev API Team",
+  "license": "MIT",
+  "dependencies": {
+    "fs-extra": "^11.1.1",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
+}

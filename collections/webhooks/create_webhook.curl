@@ -1,0 +1,19 @@
+#!/bin/bash
+# Create a new webhook
+
+curl -X POST "https://api.devrev.ai/webhooks.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://example.com/webhooks/devrev",
+    "event_types": [
+      "work_created",
+      "work_updated",
+      "work_deleted",
+      "conversation_created",
+      "timeline_entry_created"
+    ],
+    "description": "Webhook for example.com integration",
+    "secret": "your_webhook_secret_key",
+    "enabled": true
+  }'

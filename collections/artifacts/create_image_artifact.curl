@@ -1,0 +1,15 @@
+#!/bin/bash
+# Create an image artifact
+
+curl -X POST "https://api.devrev.ai/artifacts.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "file": {
+      "name": "screenshot.png",
+      "type": "image/png",
+      "size": 245760,
+      "description": "Screenshot showing the issue described in the work item"
+    },
+    "applies_to": "'$WORK_ID'"
+  }'

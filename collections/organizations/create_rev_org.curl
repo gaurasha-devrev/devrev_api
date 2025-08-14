@@ -1,0 +1,12 @@
+#!/bin/bash
+# Create a new rev organization (customer organization)
+
+curl -X POST "https://api.devrev.ai/rev-orgs.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "display_name": "Test Customer Organization",
+    "description": "Customer organization created via API for testing purposes",
+    "account": "'$ACCOUNT_ID'",
+    "environment": "production"
+  }'

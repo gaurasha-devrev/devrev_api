@@ -1,0 +1,11 @@
+#!/bin/bash
+# Create a new authentication token
+
+curl -X POST "https://api.devrev.ai/auth-tokens.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "display_name": "API Test Token",
+    "expires_at": "2024-12-31T23:59:59.000Z",
+    "scopes": ["read", "write"]
+  }'

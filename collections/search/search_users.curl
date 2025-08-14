@@ -1,0 +1,11 @@
+#!/bin/bash
+# Search for users (dev and rev users)
+
+curl -X POST "https://api.devrev.ai/search.query" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "test",
+    "types": ["dev_user", "rev_user"],
+    "limit": 10
+  }'

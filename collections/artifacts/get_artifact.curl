@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get artifact details by ID
+
+curl -X GET "https://api.devrev.ai/artifacts.get?id=$ARTIFACT_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

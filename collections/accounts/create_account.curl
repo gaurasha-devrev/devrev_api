@@ -1,0 +1,13 @@
+#!/bin/bash
+# Create a new DevRev account
+
+curl -X POST "https://api.devrev.ai/accounts.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "display_name": "Test Account",
+    "description": "Test account created via API",
+    "domains": ["testcompany.com"],
+    "websites": ["https://www.testcompany.com"],
+    "external_refs": ["EXT-ACCT-001"]
+  }'

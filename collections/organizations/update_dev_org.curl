@@ -1,0 +1,11 @@
+#!/bin/bash
+# Update dev organization
+
+curl -X POST "https://api.devrev.ai/dev-orgs.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$DEV_ORG_ID'",
+    "display_name": "Updated Dev Organization",
+    "description": "Development organization updated via API"
+  }'

@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get rev user details by ID
+
+curl -X GET "https://api.devrev.ai/rev-users.get?id=$REV_USER_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

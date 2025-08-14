@@ -1,0 +1,304 @@
+{
+	"info": {
+		"_postman_id": "e3f4g5h6-789a-bcde-f012-345678901234",
+		"name": "DevRev - Search API",
+		"description": "Collection for DevRev Search API operations - global search capabilities across all objects",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Search Everything",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.results) {",
+							"        console.log('Search found', response.results.length, 'results');",
+							"        if (response.results.length > 0) {",
+							"            const types = response.results.map(r => r.type);",
+							"            console.log('Result types:', [...new Set(types)].join(', '));",
+							"            // Set first result ID based on type",
+							"            const firstResult = response.results[0];",
+							"            pm.environment.set('search_result_id', firstResult.id);",
+							"            pm.environment.set('search_result_type', firstResult.type);",
+							"        }",
+							"    }",
+							"} else {",
+							"    console.log('Search failed:', pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"test\",\n  \"limit\": 20\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/search.query",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search.query"
+					]
+				},
+				"description": "Performs a global search across all objects in DevRev"
+			}
+		},
+		{
+			"name": "Search Works (Issues & Tickets)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.results) {",
+							"        console.log('Found', response.results.length, 'work items matching search');",
+							"        if (response.results.length > 0) {",
+							"            const workItem = response.results[0];",
+							"            pm.environment.set('search_work_id', workItem.id);",
+							"            console.log('First work item:', workItem.title);",
+							"        }",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"{{$randomWord}}\",\n  \"types\": [\"issue\", \"ticket\", \"feature\"],\n  \"limit\": 15\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/search.query",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search.query"
+					]
+				},
+				"description": "Searches specifically for work items (issues, tickets, features)"
+			}
+		},
+		{
+			"name": "Search Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.results) {",
+							"        console.log('Found', response.results.length, 'users matching search');",
+							"        const devUsers = response.results.filter(r => r.type === 'dev_user');",
+							"        const revUsers = response.results.filter(r => r.type === 'rev_user');",
+							"        console.log('Dev users:', devUsers.length, 'Rev users:', revUsers.length);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"test\",\n  \"types\": [\"dev_user\", \"rev_user\"],\n  \"limit\": 10\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/search.query",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search.query"
+					]
+				},
+				"description": "Searches for dev users and rev users"
+			}
+		},
+		{
+			"name": "Search Conversations",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"support\",\n  \"types\": [\"conversation\"],\n  \"limit\": 10\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/search.query",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search.query"
+					]
+				},
+				"description": "Searches for conversations and support discussions"
+			}
+		},
+		{
+			"name": "Search Accounts",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"company\",\n  \"types\": [\"account\"],\n  \"limit\": 10\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/search.query",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search.query"
+					]
+				},
+				"description": "Searches for customer accounts and organizations"
+			}
+		},
+		{
+			"name": "Advanced Search with Filters",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"query\": \"urgent\",\n  \"types\": [\"issue\", \"ticket\"],\n  \"filters\": {\n    \"priority\": [\"p0\", \"p1\"],\n    \"stage\": [\"in_progress\", \"triage\"]\n  },\n  \"limit\": 25\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/search.query",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"search.query"
+					]
+				},
+				"description": "Performs advanced search with specific filters for priority and stage"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script for the entire collection",
+					"console.log('DevRev Search API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Post-response script for the entire collection",
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

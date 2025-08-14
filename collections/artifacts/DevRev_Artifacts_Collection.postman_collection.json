@@ -1,0 +1,343 @@
+{
+	"info": {
+		"_postman_id": "f4g5h6i7-89ab-cdef-0123-456789012345",
+		"name": "DevRev - Artifacts API",
+		"description": "Collection for DevRev Artifacts API operations - file and document management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Create Artifact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.artifact) {",
+							"        pm.environment.set('artifact_id', response.artifact.id);",
+							"        pm.environment.set('artifact_display_id', response.artifact.display_id);",
+							"        console.log('Artifact created with ID:', response.artifact.id);",
+							"        console.log('File name:', response.artifact.file_name);",
+							"        if (response.artifact.upload_url) {",
+							"            pm.environment.set('upload_url', response.artifact.upload_url);",
+							"            console.log('Upload URL set for file upload');",
+							"        }",
+							"    }",
+							"} else {",
+							"    console.log('Artifact creation failed:', pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"file\": {\n    \"name\": \"test-document-{{$timestamp}}.txt\",\n    \"type\": \"text/plain\",\n    \"size\": 1024,\n    \"description\": \"Test document created via API for artifact management demo\"\n  },\n  \"tags\": [\"{{tag_id}}\"],\n  \"applies_to\": \"{{work_id}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.create"
+					]
+				},
+				"description": "Creates a new artifact (file/document) and returns upload URL"
+			}
+		},
+		{
+			"name": "Create Image Artifact",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.artifact) {",
+							"        pm.environment.set('image_artifact_id', response.artifact.id);",
+							"        console.log('Image artifact created with ID:', response.artifact.id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"file\": {\n    \"name\": \"screenshot-{{$timestamp}}.png\",\n    \"type\": \"image/png\",\n    \"size\": 245760,\n    \"description\": \"Screenshot showing the issue described in the work item\"\n  },\n  \"applies_to\": \"{{work_id}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.create"
+					]
+				},
+				"description": "Creates an image artifact (screenshot, diagram, etc.)"
+			}
+		},
+		{
+			"name": "Get Artifact by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.get?id={{artifact_id}}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{artifact_id}}",
+							"description": "Artifact ID from created artifact"
+						}
+					]
+				},
+				"description": "Retrieves artifact details and download URL"
+			}
+		},
+		{
+			"name": "List Artifacts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.artifacts && response.artifacts.length > 0) {",
+							"        console.log('Found', response.artifacts.length, 'artifacts');",
+							"        const fileTypes = response.artifacts.map(a => a.file_type);",
+							"        console.log('File types:', [...new Set(fileTypes)].join(', '));",
+							"        pm.environment.set('first_artifact_id', response.artifacts[0].id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.list?limit=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.list"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "Maximum number of artifacts to return"
+						},
+						{
+							"key": "applies_to",
+							"value": "",
+							"description": "Filter by object the artifact applies to",
+							"disabled": true
+						},
+						{
+							"key": "file_type",
+							"value": "",
+							"description": "Filter by file type (image/png, text/plain, etc.)",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Lists all artifacts with optional filtering"
+			}
+		},
+		{
+			"name": "List Artifacts for Work Item",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.list?applies_to={{work_id}}&limit=10",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.list"
+					],
+					"query": [
+						{
+							"key": "applies_to",
+							"value": "{{work_id}}",
+							"description": "Work item ID to filter artifacts"
+						},
+						{
+							"key": "limit",
+							"value": "10",
+							"description": "Maximum number of artifacts to return"
+						}
+					]
+				},
+				"description": "Lists artifacts attached to a specific work item"
+			}
+		},
+		{
+			"name": "Update Artifact",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{artifact_id}}\",\n  \"file\": {\n    \"description\": \"[UPDATED on {{$timestamp}}] Updated description for test document - now includes additional context and metadata\"\n  }\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.update",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.update"
+					]
+				},
+				"description": "Updates artifact metadata (description, tags, etc.)"
+			}
+		},
+		{
+			"name": "Delete Artifact",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{artifact_id}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/artifacts.delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"artifacts.delete"
+					]
+				},
+				"description": "Deletes an artifact and its associated file"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script for the entire collection",
+					"console.log('DevRev Artifacts API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Post-response script for the entire collection",
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

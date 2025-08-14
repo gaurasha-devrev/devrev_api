@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "e5f6g7h8-i9j0-1234-efgh-567890123456",
+		"name": "DevRev - Parts API",
+		"description": "Collection for DevRev Parts API operations (Products/Components) with variable chaining",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Create Part",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.part) {",
+							"        pm.environment.set('part_id', response.part.id);",
+							"        pm.environment.set('part_display_id', response.part.display_id);",
+							"        pm.environment.set('part_name', response.part.name);",
+							"        console.log('Part created with ID:', response.part.id);",
+							"        console.log('Part name:', response.part.name);",
+							"    }",
+							"} else {",
+							"    console.log('Part creation failed:', pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"{{$randomProductName}}\",\n  \"description\": \"Test product/component created via API on {{$timestamp}}\",\n  \"type\": \"product\",\n  \"owned_by\": [\"{{dev_user_id}}\"],\n  \"stock_schema_fragment\": \"don:core:dvrv-us-1:devo/example:custom_type_fragment/product\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/parts.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parts.create"
+					]
+				},
+				"description": "Creates a new part (product or component)"
+			}
+		},
+		{
+			"name": "Get Part by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/parts.get?id={{part_id}}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parts.get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{part_id}}",
+							"description": "Part ID from created part"
+						}
+					]
+				},
+				"description": "Retrieves part details using the part ID"
+			}
+		},
+		{
+			"name": "List Parts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.parts && response.parts.length > 0) {",
+							"        // Set the first part ID for future use",
+							"        pm.environment.set('first_part_id', response.parts[0].id);",
+							"        console.log('Found', response.parts.length, 'parts');",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/parts.list?limit=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parts.list"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "Maximum number of parts to return"
+						},
+						{
+							"key": "type",
+							"value": "",
+							"description": "Filter by part type (product, capability, feature, enhancement)",
+							"disabled": true
+						},
+						{
+							"key": "owned_by",
+							"value": "",
+							"description": "Filter by owner ID",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Lists all parts with optional filters"
+			}
+		},
+		{
+			"name": "Update Part",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{part_id}}\",\n  \"description\": \"Updated part description on {{$timestamp}}\",\n  \"name\": \"[UPDATED] {{part_name}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/parts.update",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parts.update"
+					]
+				},
+				"description": "Updates an existing part"
+			}
+		},
+		{
+			"name": "Delete Part",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{part_id}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/parts.delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"parts.delete"
+					]
+				},
+				"description": "Deletes a part"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('DevRev Parts API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

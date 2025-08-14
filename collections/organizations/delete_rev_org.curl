@@ -1,0 +1,9 @@
+#!/bin/bash
+# Delete rev organization
+
+curl -X POST "https://api.devrev.ai/rev-orgs.delete" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$REV_ORG_ID'"
+  }'

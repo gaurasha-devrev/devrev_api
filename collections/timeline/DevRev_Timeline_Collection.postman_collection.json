@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "d2e3f4g5-6789-abcd-ef01-234567890123",
+		"name": "DevRev - Timeline Entries API",
+		"description": "Collection for DevRev Timeline Entries API operations - comments and activity tracking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Create Timeline Entry (Comment)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.timeline_entry) {",
+							"        pm.environment.set('timeline_entry_id', response.timeline_entry.id);",
+							"        pm.environment.set('comment_id', response.timeline_entry.id);",
+							"        console.log('Timeline entry created with ID:', response.timeline_entry.id);",
+							"        console.log('Entry type:', response.timeline_entry.type);",
+							"    }",
+							"} else {",
+							"    console.log('Timeline entry creation failed:', pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"object\": \"{{work_id}}\",\n  \"body\": \"**Comment added via API on {{$timestamp}}**\\n\\nThis is a test comment with:\\n- Rich text formatting\\n- Multiple bullet points\\n- Timestamps and context\\n\\n> This comment demonstrates the timeline entry functionality for tracking communication and updates on work items.\",\n  \"type\": \"timeline_comment\",\n  \"visibility\": \"public\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.create"
+					]
+				},
+				"description": "Creates a new comment/timeline entry on a work item or conversation"
+			}
+		},
+		{
+			"name": "Create Timeline Entry (Update)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.timeline_entry) {",
+							"        pm.environment.set('update_entry_id', response.timeline_entry.id);",
+							"        console.log('Update timeline entry created with ID:', response.timeline_entry.id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"object\": \"{{work_id}}\",\n  \"body\": \"**Status Update - {{$timestamp}}**\\n\\n🔄 **Progress Update:**\\n- Completed initial analysis\\n- Identified root cause\\n- Started implementation\\n\\n📊 **Next Steps:**\\n1. Complete code changes\\n2. Run tests\\n3. Deploy to staging\\n\\n⏱️ **ETA:** End of week\",\n  \"type\": \"timeline_update\",\n  \"visibility\": \"public\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.create"
+					]
+				},
+				"description": "Creates a status update timeline entry"
+			}
+		},
+		{
+			"name": "Get Timeline Entry by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.get?id={{timeline_entry_id}}",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{timeline_entry_id}}",
+							"description": "Timeline entry ID"
+						}
+					]
+				},
+				"description": "Retrieves timeline entry details using the entry ID"
+			}
+		},
+		{
+			"name": "List Timeline Entries for Work Item",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 200) {",
+							"    const response = pm.response.json();",
+							"    if (response.timeline_entries && response.timeline_entries.length > 0) {",
+							"        console.log('Found', response.timeline_entries.length, 'timeline entries');",
+							"        const entryTypes = response.timeline_entries.map(e => e.type);",
+							"        console.log('Entry types:', [...new Set(entryTypes)].join(', '));",
+							"        pm.environment.set('first_timeline_entry_id', response.timeline_entries[0].id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.list?object={{work_id}}&limit=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.list"
+					],
+					"query": [
+						{
+							"key": "object",
+							"value": "{{work_id}}",
+							"description": "Object ID (work item, conversation, etc.)"
+						},
+						{
+							"key": "limit",
+							"value": "20",
+							"description": "Maximum number of entries to return"
+						},
+						{
+							"key": "type",
+							"value": "",
+							"description": "Filter by entry type",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Lists timeline entries for a specific object (work item, conversation, etc.)"
+			}
+		},
+		{
+			"name": "List All Timeline Entries",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.list?limit=50",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.list"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50",
+							"description": "Maximum number of entries to return"
+						},
+						{
+							"key": "created_date.after",
+							"value": "",
+							"description": "Filter entries after specific date",
+							"disabled": true
+						},
+						{
+							"key": "created_date.before",
+							"value": "",
+							"description": "Filter entries before specific date",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Lists all timeline entries with optional filtering"
+			}
+		},
+		{
+			"name": "Update Timeline Entry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{timeline_entry_id}}\",\n  \"body\": \"[EDITED on {{$timestamp}}] **Updated Comment**\\n\\nThis comment has been edited to include additional information:\\n- New insights discovered\\n- Additional context provided\\n- Corrections made to original post\\n\\n> Original timestamp preserved, edit timestamp added\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.update",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.update"
+					]
+				},
+				"description": "Updates an existing timeline entry"
+			}
+		},
+		{
+			"name": "Delete Timeline Entry",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\": \"{{timeline_entry_id}}\"\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/timeline-entries.delete",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"timeline-entries.delete"
+					]
+				},
+				"description": "Deletes a timeline entry"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script for the entire collection",
+					"console.log('DevRev Timeline Entries API Collection - Request starting');"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Post-response script for the entire collection",
+					"console.log('Response status:', pm.response.code, pm.response.status);"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

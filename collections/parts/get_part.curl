@@ -1,0 +1,5 @@
+#!/bin/bash
+# Get part details by ID
+
+curl -X GET "https://api.devrev.ai/parts.get?id=$PART_ID" \
+  -H "Authorization: Bearer $DEVREV_TOKEN"

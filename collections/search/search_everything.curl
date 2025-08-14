@@ -1,0 +1,10 @@
+#!/bin/bash
+# Search across all objects in DevRev
+
+curl -X POST "https://api.devrev.ai/search.query" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "test",
+    "limit": 20
+  }'

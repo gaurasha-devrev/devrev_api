@@ -1,0 +1,20 @@
+#!/bin/bash
+# Update webhook configuration
+
+curl -X POST "https://api.devrev.ai/webhooks.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$WEBHOOK_ID'",
+    "description": "[UPDATED] Enhanced webhook with additional event types",
+    "event_types": [
+      "work_created",
+      "work_updated",
+      "work_deleted",
+      "conversation_created",
+      "timeline_entry_created",
+      "account_created",
+      "user_created"
+    ],
+    "enabled": true
+  }'

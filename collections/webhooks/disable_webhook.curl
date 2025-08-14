@@ -1,0 +1,10 @@
+#!/bin/bash
+# Disable webhook without deleting it
+
+curl -X POST "https://api.devrev.ai/webhooks.update" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "id": "'$WEBHOOK_ID'",
+    "enabled": false
+  }'
