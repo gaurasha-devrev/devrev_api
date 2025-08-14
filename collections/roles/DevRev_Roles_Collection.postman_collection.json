@@ -1,0 +1,96 @@
+{
+	"info": {
+		"_postman_id": "roles123-5678-9abc-def0-123456789012",
+		"name": "DevRev - Roles API",
+		"description": "Collection for DevRev Roles API operations - permission and role management system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Create Role",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.role) {",
+							"        pm.environment.set('role_id', response.role.id);",
+							"        console.log('Role created with ID:', response.role.id);",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"API Test Role\",\n  \"description\": \"Test role created via API\",\n  \"permissions\": [\n    \"accounts:read\",\n    \"works:read\",\n    \"works:write\"\n  ]\n}"
+				},
+				"url": {
+					"raw": "https://{{base_url}}/roles.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"roles.create"
+					]
+				}
+			}
+		},
+		{
+			"name": "List Roles",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/roles.list?limit=20",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"roles.list"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "20"
+						}
+					]
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string"
+		}
+	]
+}

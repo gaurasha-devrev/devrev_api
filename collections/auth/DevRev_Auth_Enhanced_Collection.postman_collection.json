@@ -1,0 +1,315 @@
+{
+	"info": {
+		"_postman_id": "enhanced-auth-1234-5678-9abc-def0",
+		"name": "DevRev - Authentication API (Enhanced)",
+		"description": "Enhanced collection for DevRev Authentication API with complete parameter specifications from https://developer.devrev.ai/beta/api-reference",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12345678"
+	},
+	"item": [
+		{
+			"name": "Create Auth Token (Complete)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.access_token) {",
+							"        pm.environment.set('aat', response.access_token);",
+							"        pm.environment.set('token_id', response.id);",
+							"        pm.environment.set('auth_token', response.access_token);",
+							"        pm.environment.set('client_id', response.client_id);",
+							"        console.log('✅ Auth token created successfully');",
+							"        console.log('Token ID:', response.id);",
+							"        console.log('Client ID:', response.client_id);",
+							"        console.log('Expires At:', response.expires_at);",
+							"    }",
+							"} else {",
+							"    console.log('❌ Auth token creation failed:', pm.response.text());",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text",
+						"description": "Bearer authentication with existing token"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"act_as\": \"{{dev_user_id}}\",\n  \"aud\": [\"https://api.devrev.ai\", \"{{base_url}}\"],\n  \"client_id\": \"devrev-api-client-{{$timestamp}}\",\n  \"expires_in\": 90,\n  \"grant_type\": \"urn:devrev:params:oauth:grant-type:token-issue\",\n  \"display_name\": \"Enhanced API Token - {{$timestamp}}\",\n  \"scopes\": [\"read\", \"write\", \"admin\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.create"
+					]
+				},
+				"description": "Creates an authentication token with complete parameter specifications:\n\n**Parameters:**\n- `act_as` (string, optional, format: \"id\") - The unique ID of the Dev user or service account to impersonate\n- `aud` (list of strings, optional) - The expected audience values with respect to the token\n- `client_id` (string, optional, format: \"text\") - Application identifier requesting the token\n- `expires_in` (integer, optional, >=0, <=4294967295) - Token validity lifetime in days\n- `grant_type` (enum, optional) - Process of obtaining token. Allowed: 'urn:devrev:params:oauth:grant-type:token-issue'\n- `display_name` (string, optional, format: \"text\") - Human-readable token name\n- `scopes` (list of strings, optional) - Permission scopes for the token"
+			}
+		},
+		{
+			"name": "Create Auth Token (Minimal Required)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.access_token) {",
+							"        pm.environment.set('minimal_token', response.access_token);",
+							"        console.log('✅ Minimal auth token created');",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"display_name\": \"Minimal Token\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.create"
+					]
+				},
+				"description": "Creates auth token with minimal required parameters only.\n\n**Required Parameters:**\n- `display_name` (string, required, format: \"text\") - Human-readable token name\n\n**Note:** All other parameters are optional and will use system defaults."
+			}
+		},
+		{
+			"name": "Create Service Account Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (pm.response.code === 201) {",
+							"    const response = pm.response.json();",
+							"    if (response.access_token) {",
+							"        pm.environment.set('service_account_token', response.access_token);",
+							"        console.log('✅ Service account token created');",
+							"    }",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"act_as\": \"{{service_account_id}}\",\n  \"client_id\": \"service-client-{{$randomAlphaNumeric}}\",\n  \"expires_in\": 365,\n  \"grant_type\": \"urn:devrev:params:oauth:grant-type:token-issue\",\n  \"display_name\": \"Service Account Token - {{$timestamp}}\",\n  \"scopes\": [\"read\", \"write\"]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.create"
+					]
+				},
+				"description": "Creates a token for service account authentication.\n\n**Service Account Specific:**\n- `act_as` - Set to service account ID for impersonation\n- `expires_in` - Longer validity (365 days) for automated systems\n- `client_id` - Service-specific client identifier"
+			}
+		},
+		{
+			"name": "Create Token with Validation Examples",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Validate expires_in constraint (0 <= expires_in <= 4294967295)",
+							"const expiresIn = parseInt(pm.environment.get('test_expires_in') || '30');",
+							"if (expiresIn < 0 || expiresIn > 4294967295) {",
+							"    console.error('❌ expires_in must be between 0 and 4294967295');",
+							"    pm.environment.set('test_expires_in', '30');",
+							"}",
+							"",
+							"// Set valid grant_type",
+							"pm.environment.set('valid_grant_type', 'urn:devrev:params:oauth:grant-type:token-issue');"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"expires_in\": {{test_expires_in}},\n  \"grant_type\": \"{{valid_grant_type}}\",\n  \"display_name\": \"Validation Test Token\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.create",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.create"
+					]
+				},
+				"description": "Demonstrates parameter validation and constraints.\n\n**Validation Rules:**\n- `expires_in`: Integer, 0 ≤ value ≤ 4,294,967,295\n- `grant_type`: Must be exact enum value\n- Pre-request script validates constraints"
+			}
+		},
+		{
+			"name": "Get Auth Token (Enhanced)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{aat}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{base_url}}/auth-tokens.get?id={{token_id}}&include_permissions=true",
+					"protocol": "https",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"auth-tokens.get"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{token_id}}",
+							"description": "Token ID (string, required, format: id)"
+						},
+						{
+							"key": "include_permissions",
+							"value": "true",
+							"description": "Include permission details (boolean, optional)"
+						}
+					]
+				},
+				"description": "Retrieves authentication token with enhanced query parameters.\n\n**Query Parameters:**\n- `id` (string, required, format: \"id\") - Token identifier\n- `include_permissions` (boolean, optional) - Include detailed permissions in response"
+			}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Enhanced Authentication Collection - Pre-request validation",
+					"console.log('🔐 DevRev Auth API Collection - Enhanced Version');",
+					"",
+					"// Set default test values if not present",
+					"if (!pm.environment.get('test_expires_in')) {",
+					"    pm.environment.set('test_expires_in', '30');",
+					"}",
+					"",
+					"// Validate base_url format",
+					"const baseUrl = pm.environment.get('base_url');",
+					"if (!baseUrl || !baseUrl.includes('devrev.ai')) {",
+					"    console.warn('⚠️ base_url should point to DevRev API endpoint');",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "api.devrev.ai",
+			"type": "string",
+			"description": "DevRev API base URL"
+		},
+		{
+			"key": "test_expires_in",
+			"value": "30",
+			"type": "string",
+			"description": "Test value for expires_in parameter (days)"
+		}
+	]
+}

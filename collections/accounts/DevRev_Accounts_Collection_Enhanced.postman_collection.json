@@ -1,0 +1,252 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "DevRev - Accounts API",
+    "description": "Collection for DevRev Accounts API operations with variable chaining\n\n**Enhanced with detailed parameter specifications from DevRev API documentation.**",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "Create Account (Enhanced)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    if (response.account) {",
+              "        pm.environment.set('account_id', response.account.id);",
+              "        pm.environment.set('account_display_id', response.account.display_id);",
+              "        pm.environment.set('account_display_name', response.account.display_name);",
+              "        console.log('Account created with ID:', response.account.id);",
+              "    }",
+              "} else {",
+              "    console.log('Account creation failed:', pm.response.text());",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"display_name\": \"Example display_name\",\n  \"description\": \"Example description\",\n  \"domains\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"websites\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"tier\": \"Example tier\",\n  \"artifacts\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"custom_fields\": {},\n  \"custom_schema_spec\": {},\n  \"external_refs\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"owned_by\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"tags\": []\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://{{base_url}}/accounts.create",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "accounts.create"
+          ]
+        },
+        "description": "Creates a new account representing a customer or organization"
+      },
+      "description": "\n\n**Enhanced Parameter Specifications:**\n\n- `display_name` (string, format: \"text\", **Required**) - Name of the account\n- `artifacts` (array, *Optional*) - The IDs of the artifacts to associate with the account\n- `custom_fields` (object, *Optional*) - Application-defined custom fields\n- `custom_schema_spec` (object, *Optional*) - Custom schemas described using identifiers\n- `description` (string, format: \"text\", *Optional*) - Description of the account\n- `domains` (array, *Optional*) - List of company's domain names. Example - ['devrev.ai']\n- `external_refs` (array, *Optional*) - External refs are unique identifiers from your customer system of records\n- `owned_by` (array, *Optional*) - List of Dev users owning this account\n- `tags` (array, *Optional*) - Tags associated with the account\n- `tier` (string, format: \"text\", *Optional*) - The tier of the account\n- `websites` (array, *Optional*) - List of company websites. Example - ['www.devrev.ai']\n"
+    },
+    {
+      "name": "Get Account by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://{{base_url}}/accounts.get?id={{account_id}}",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "accounts.get"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "{{account_id}}",
+              "description": "Account ID from created account"
+            }
+          ]
+        },
+        "description": "Retrieves account details using the account ID"
+      }
+    },
+    {
+      "name": "List Accounts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    if (response.accounts && response.accounts.length > 0) {",
+              "        // Set the first account ID for future use",
+              "        pm.environment.set('first_account_id', response.accounts[0].id);",
+              "        console.log('Found', response.accounts.length, 'accounts');",
+              "    }",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://{{base_url}}/accounts.list?limit=10",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "accounts.list"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "Maximum number of accounts to return"
+            },
+            {
+              "key": "cursor",
+              "value": "",
+              "description": "Pagination cursor",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Lists all accounts with optional pagination"
+      }
+    },
+    {
+      "name": "Update Account",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{account_id}}\",\n  \"description\": \"Updated account description on {{$timestamp}}\",\n  \"tier\": \"premium\"\n}"
+        },
+        "url": {
+          "raw": "https://{{base_url}}/accounts.update",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "accounts.update"
+          ]
+        },
+        "description": "Updates an existing account"
+      }
+    },
+    {
+      "name": "Delete Account",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{account_id}}\"\n}"
+        },
+        "url": {
+          "raw": "https://{{base_url}}/accounts.delete",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "accounts.delete"
+          ]
+        },
+        "description": "Deletes an account"
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Pre-request script for the entire collection",
+          "console.log('DevRev Accounts API Collection - Request starting');"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Post-response script for the entire collection",
+          "console.log('Response status:', pm.response.code, pm.response.status);"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "api.devrev.ai",
+      "type": "string"
+    }
+  ]
+}

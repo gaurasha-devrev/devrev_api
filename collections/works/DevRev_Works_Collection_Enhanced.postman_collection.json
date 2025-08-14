@@ -1,0 +1,328 @@
+{
+  "info": {
+    "_postman_id": "b2c3d4e5-f6g7-8901-bcde-f23456789012",
+    "name": "DevRev - Works (Tickets) API",
+    "description": "Collection for DevRev Works API operations (Issues, Tickets, Features) with variable chaining\n\n**Enhanced with detailed parameter specifications from DevRev API documentation.**",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345678"
+  },
+  "item": [
+    {
+      "name": "Create Work Item (Issue) (Enhanced)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    if (response.work) {",
+              "        pm.environment.set('work_id', response.work.id);",
+              "        pm.environment.set('work_display_id', response.work.display_id);",
+              "        pm.environment.set('ticket_id', response.work.id);",
+              "        pm.environment.set('issue_id', response.work.id);",
+              "        console.log('Work item created with ID:', response.work.id);",
+              "        console.log('Display ID:', response.work.display_id);",
+              "    }",
+              "} else {",
+              "    console.log('Work item creation failed:', pm.response.text());",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Example title\",\n  \"body\": \"Example body\",\n  \"type\": \"issue\",\n  \"priority\": \"p0\",\n  \"stage\": {},\n  \"applies_to_part\": \"{{applies_to_part_example}}\",\n  \"owned_by\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"reported_by\": [\n    \"example1\",\n    \"example2\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://{{base_url}}/works.create",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "works.create"
+          ]
+        },
+        "description": "Creates a new work item (issue, ticket, or feature)"
+      },
+      "description": "\n\n**Enhanced Parameter Specifications:**\n\n- `title` (string, format: \"text\", **Required**) - Title of the work item\n- `body` (string, format: \"text\", *Optional*) - Body/description of the work item\n- `type` (enum, **Required**) - Type of the work item\n  - Allowed values: \"issue\", \"ticket\", \"feature\", \"task\", \"bug\"\n- `priority` (enum, *Optional*) - Priority level of the work item\n  - Allowed values: \"p0\", \"p1\", \"p2\", \"p3\"\n- `stage` (object, *Optional*) - Current stage of the work item\n- `applies_to_part` (string, format: \"id\", *Optional*) - ID of the part this work item applies to\n- `owned_by` (array, *Optional*) - List of user IDs who own this work item\n- `reported_by` (array, *Optional*) - List of user IDs who reported this work item\n"
+    },
+    {
+      "name": "Create Work Item (Feature) (Enhanced)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "    const response = pm.response.json();",
+              "    if (response.work) {",
+              "        pm.environment.set('feature_id', response.work.id);",
+              "        pm.environment.set('feature_display_id', response.work.display_id);",
+              "        console.log('Feature created with ID:', response.work.id);",
+              "    }",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Example title\",\n  \"body\": \"Example body\",\n  \"type\": \"issue\",\n  \"priority\": \"p0\",\n  \"stage\": {},\n  \"applies_to_part\": \"{{applies_to_part_example}}\",\n  \"owned_by\": [\n    \"example1\",\n    \"example2\"\n  ],\n  \"reported_by\": [\n    \"example1\",\n    \"example2\"\n  ]\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://{{base_url}}/works.create",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "works.create"
+          ]
+        },
+        "description": "Creates a new feature request"
+      },
+      "description": "\n\n**Enhanced Parameter Specifications:**\n\n- `title` (string, format: \"text\", **Required**) - Title of the work item\n- `body` (string, format: \"text\", *Optional*) - Body/description of the work item\n- `type` (enum, **Required**) - Type of the work item\n  - Allowed values: \"issue\", \"ticket\", \"feature\", \"task\", \"bug\"\n- `priority` (enum, *Optional*) - Priority level of the work item\n  - Allowed values: \"p0\", \"p1\", \"p2\", \"p3\"\n- `stage` (object, *Optional*) - Current stage of the work item\n- `applies_to_part` (string, format: \"id\", *Optional*) - ID of the part this work item applies to\n- `owned_by` (array, *Optional*) - List of user IDs who own this work item\n- `reported_by` (array, *Optional*) - List of user IDs who reported this work item\n"
+    },
+    {
+      "name": "Get Work Item by ID",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://{{base_url}}/works.get?id={{ticket_id}}",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "works.get"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "{{ticket_id}}",
+              "description": "Work item ID from created ticket"
+            }
+          ]
+        },
+        "description": "Retrieves work item details using the work ID"
+      }
+    },
+    {
+      "name": "List Work Items",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "    const response = pm.response.json();",
+              "    if (response.works && response.works.length > 0) {",
+              "        // Set the first work item ID for future use",
+              "        pm.environment.set('first_work_id', response.works[0].id);",
+              "        console.log('Found', response.works.length, 'work items');",
+              "    }",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://{{base_url}}/works.list?limit=20&type=issue,ticket,feature",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "works.list"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20",
+              "description": "Maximum number of work items to return"
+            },
+            {
+              "key": "type",
+              "value": "issue,ticket,feature",
+              "description": "Filter by work item types"
+            },
+            {
+              "key": "stage.name",
+              "value": "",
+              "description": "Filter by stage name",
+              "disabled": true
+            },
+            {
+              "key": "priority",
+              "value": "",
+              "description": "Filter by priority (p0, p1, p2, p3)",
+              "disabled": true
+            },
+            {
+              "key": "applies_to_part",
+              "value": "",
+              "description": "Filter by part ID",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Lists work items with optional filters"
+      }
+    },
+    {
+      "name": "Update Work Item",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{work_id}}\",\n  \"title\": \"[UPDATED] {{$randomLoremSentence}}\",\n  \"priority\": \"p1\",\n  \"stage\": {\n    \"name\": \"in_progress\"\n  },\n  \"body\": \"**Updated on {{$timestamp}}**\\n\\nThis work item has been updated via API.\"\n}"
+        },
+        "url": {
+          "raw": "https://{{base_url}}/works.update",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "works.update"
+          ]
+        },
+        "description": "Updates an existing work item"
+      }
+    },
+    {
+      "name": "Delete Work Item",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{aat}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"id\": \"{{work_id}}\"\n}"
+        },
+        "url": {
+          "raw": "https://{{base_url}}/works.delete",
+          "protocol": "https",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "works.delete"
+          ]
+        },
+        "description": "Deletes a work item"
+      }
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Pre-request script for the entire collection",
+          "console.log('DevRev Works API Collection - Request starting');"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Post-response script for the entire collection",
+          "console.log('Response status:', pm.response.code, pm.response.status);"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "api.devrev.ai",
+      "type": "string"
+    }
+  ]
+}

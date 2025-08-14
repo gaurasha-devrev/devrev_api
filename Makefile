@@ -58,7 +58,34 @@ dist: clean install test generate ## Full build process
 dev-setup: install ## Setup development environment
 	@echo "🛠️  Setting up development environment..."
 	@chmod +x gen/generate-combined-collection.js
+	@mkdir -p scripts
+	@chmod +x scripts/generate-missing-collections.js 2>/dev/null || true
 	@echo "✅ Development environment ready"
+
+generate-missing: ## Generate missing API collections (high priority)
+	@echo "🚀 Generating missing DevRev API collections..."
+	@mkdir -p scripts
+	node scripts/generate-missing-collections.js high
+	@echo "✅ Missing collections generated"
+
+generate-all-missing: ## Generate ALL missing API collections
+	@echo "🚀 Generating ALL missing DevRev API collections..."
+	@mkdir -p scripts
+	node scripts/generate-missing-collections.js high
+	node scripts/generate-missing-collections.js medium
+	node scripts/generate-missing-collections.js low
+	@echo "✅ All missing collections generated"
+
+enhance-specs: ## Enhance collections with detailed API specifications
+	@echo "📝 Enhancing collections with detailed parameter specifications..."
+	@mkdir -p scripts
+	@chmod +x scripts/enhance-api-specifications.js
+	node scripts/enhance-api-specifications.js
+	@echo "✅ Collections enhanced with detailed specifications"
+
+generate-complete: enhance-specs generate ## Generate enhanced collections and combine them
+	@echo "🎯 Complete generation with enhanced specifications..."
+	@echo "✅ Complete enhanced collections ready for import"
 
 watch: ## Watch for changes and regenerate (requires entr)
 	@echo "👀 Watching for changes (press Ctrl+C to stop)..."

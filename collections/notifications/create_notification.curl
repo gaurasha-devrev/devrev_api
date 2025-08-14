@@ -1,0 +1,13 @@
+#!/bin/bash
+# Create a new notification
+
+curl -X POST "https://api.devrev.ai/notifications.create" \
+  -H "Authorization: Bearer $DEVREV_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Test Notification",
+    "message": "This is a test notification created via API",
+    "type": "info",
+    "recipients": ["'$DEV_USER_ID'"],
+    "priority": "normal"
+  }'
