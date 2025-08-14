@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
-const fs = require('fs-extra');
-const path = require('path');
+const fs = require("fs-extra");
+const path = require("path");
 
 class PostmanCollectionGenerator {
   constructor() {
-    this.collectionsDir = path.join(__dirname, '..', 'collections');
-    this.outputDir = path.join(__dirname, '..', 'dist');
+    this.collectionsDir = path.join(__dirname, "..", "collections");
+    this.outputDir = path.join(__dirname, "..", "dist");
     this.timestamp = new Date().toISOString();
   }
 
   async generateCombinedCollection() {
-    console.log('🚀 Starting DevRev API Collection Generation...\n');
+    console.log("🚀 Starting DevRev API Collection Generation...\n");
 
     // Ensure output directory exists
     await fs.ensureDir(this.outputDir);
@@ -22,19 +22,21 @@ class PostmanCollectionGenerator {
 
     // Generate workspace with all collections
     const workspace = this.createWorkspace(collections, environments);
-    
+
     // Generate single mega-collection
     const megaCollection = this.createMegaCollection(collections);
 
     // Write outputs
     await this.writeOutput(workspace, megaCollection, environments);
 
-    console.log('✅ Generation complete!\n');
-    console.log('📁 Output files:');
-    console.log(`   - dist/DevRev_Complete_Workspace.postman.json (recommended)`);
+    console.log("✅ Generation complete!\n");
+    console.log("📁 Output files:");
+    console.log(
+      `   - dist/DevRev_Complete_Workspace.postman.json (recommended)`,
+    );
     console.log(`   - dist/DevRev_Mega_Collection.postman_collection.json`);
     console.log(`   - dist/environments/ (individual environment files)`);
-    console.log('\n🎯 Import the workspace file for the best experience!');
+    console.log("\n🎯 Import the workspace file for the best experience!");
   }
 
   async getAllCollections() {
@@ -44,11 +46,11 @@ class PostmanCollectionGenerator {
     for (const dir of collectionDirs) {
       const dirPath = path.join(this.collectionsDir, dir);
       const stat = await fs.stat(dirPath);
-      
-      if (stat.isDirectory() && dir !== 'environments') {
+
+      if (stat.isDirectory() && dir !== "environments") {
         const collectionFiles = await fs.readdir(dirPath);
-        const postmanFile = collectionFiles.find(file => 
-          file.endsWith('.postman_collection.json')
+        const postmanFile = collectionFiles.find((file) =>
+          file.endsWith(".postman_collection.json"),
         );
 
         if (postmanFile) {
@@ -58,11 +60,14 @@ class PostmanCollectionGenerator {
             collections.push({
               name: dir,
               filePath: collectionPath,
-              data: collection
+              data: collection,
             });
             console.log(`✓ Loaded collection: ${collection.info.name}`);
           } catch (error) {
-            console.warn(`⚠️  Failed to load collection from ${collectionPath}:`, error.message);
+            console.warn(
+              `⚠️  Failed to load collection from ${collectionPath}:`,
+              error.message,
+            );
           }
         }
       }
@@ -73,24 +78,27 @@ class PostmanCollectionGenerator {
 
   async getAllEnvironments() {
     const environments = [];
-    const envDir = path.join(this.collectionsDir, 'environments');
-    
+    const envDir = path.join(this.collectionsDir, "environments");
+
     if (await fs.pathExists(envDir)) {
       const envFiles = await fs.readdir(envDir);
-      
+
       for (const file of envFiles) {
-        if (file.endsWith('.postman_environment.json')) {
+        if (file.endsWith(".postman_environment.json")) {
           const envPath = path.join(envDir, file);
           try {
             const environment = await fs.readJson(envPath);
             environments.push({
-              name: file.replace('.postman_environment.json', ''),
+              name: file.replace(".postman_environment.json", ""),
               filePath: envPath,
-              data: environment
+              data: environment,
             });
             console.log(`✓ Loaded environment: ${environment.name}`);
           } catch (error) {
-            console.warn(`⚠️  Failed to load environment from ${envPath}:`, error.message);
+            console.warn(
+              `⚠️  Failed to load environment from ${envPath}:`,
+              error.message,
+            );
           }
         }
       }
@@ -101,19 +109,20 @@ class PostmanCollectionGenerator {
 
   createWorkspace(collections, environments) {
     const workspaceId = this.generateId();
-    
+
     return {
       info: {
         _postman_id: workspaceId,
         name: "DevRev API Complete Workspace",
-        description: `Complete DevRev API workspace with all collections and environments.\n\nGenerated on: ${this.timestamp}\n\nThis workspace includes:\n${collections.map(c => `- ${c.data.info.name}`).join('\n')}\n\nEnvironments:\n${environments.map(e => `- ${e.data.name}`).join('\n')}\n\nFor individual collections and cURL examples, see: https://github.com/devrev/api-collections`,
-        schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+        description: `Complete DevRev API workspace with all collections and environments.\n\nGenerated on: ${this.timestamp}\n\nThis workspace includes:\n${collections.map((c) => `- ${c.data.info.name}`).join("\n")}\n\nEnvironments:\n${environments.map((e) => `- ${e.data.name}`).join("\n")}\n\nFor individual collections and cURL examples, see: https://github.com/devrev/api-collections`,
+        schema:
+          "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
       },
-      item: collections.map(collection => ({
+      item: collections.map((collection) => ({
         name: collection.data.info.name,
         item: collection.data.item || [],
         event: collection.data.event || [],
-        variable: collection.data.variable || []
+        variable: collection.data.variable || [],
       })),
       event: [
         {
@@ -131,9 +140,9 @@ class PostmanCollectionGenerator {
               "",
               "// Log current environment",
               "console.log('Base URL:', pm.environment.get('base_url'));",
-              "console.log('Token set:', !!pm.environment.get('aat'));"
-            ]
-          }
+              "console.log('Token set:', !!pm.environment.get('aat'));",
+            ],
+          },
         },
         {
           listen: "test",
@@ -149,46 +158,49 @@ class PostmanCollectionGenerator {
               "// Basic error handling",
               "if (pm.response.code >= 400) {",
               "    console.error('API Error:', pm.response.text());",
-              "}"
-            ]
-          }
-        }
+              "}",
+            ],
+          },
+        },
       ],
       variable: [
         {
           key: "base_url",
           value: "api.devrev.ai",
-          type: "string"
+          type: "string",
         },
         {
           key: "workspace_version",
           value: "1.0.0",
-          type: "string"
+          type: "string",
         },
         {
           key: "generated_at",
           value: this.timestamp,
-          type: "string"
-        }
-      ]
+          type: "string",
+        },
+      ],
     };
   }
 
   createMegaCollection(collections) {
     const megaCollectionId = this.generateId();
-    
+
     return {
       info: {
         _postman_id: megaCollectionId,
         name: "DevRev API - Complete Collection",
-        description: `Complete DevRev API collection with all endpoints in a single file.\n\nGenerated on: ${this.timestamp}\n\nThis collection includes all DevRev API endpoints organized by category:\n${collections.map(c => `- ${c.data.info.name}`).join('\n')}\n\nFor better organization, consider importing the workspace file instead.\n\nCurl examples and individual collections available at: https://github.com/devrev/api-collections`,
-        schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-        _exporter_id: "devrev-generator"
+        description: `Complete DevRev API collection with all endpoints in a single file.\n\nGenerated on: ${this.timestamp}\n\nThis collection includes all DevRev API endpoints organized by category:\n${collections.map((c) => `- ${c.data.info.name}`).join("\n")}\n\nFor better organization, consider importing the workspace file instead.\n\nCurl examples and individual collections available at: https://github.com/devrev/api-collections`,
+        schema:
+          "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        _exporter_id: "devrev-generator",
       },
-      item: collections.map(collection => ({
-        name: collection.data.info.name.replace('DevRev - ', ''),
-        description: collection.data.info.description || `${collection.data.info.name} operations`,
-        item: collection.data.item || []
+      item: collections.map((collection) => ({
+        name: collection.data.info.name.replace("DevRev - ", ""),
+        description:
+          collection.data.info.description ||
+          `${collection.data.info.name} operations`,
+        item: collection.data.item || [],
       })),
       event: [
         {
@@ -211,9 +223,9 @@ class PostmanCollectionGenerator {
               "if (missingVars.length > 0) {",
               "    console.warn('Missing required environment variables:', missingVars.join(', '));",
               "    console.warn('Please set these variables in your environment.');",
-              "}"
-            ]
-          }
+              "}",
+            ],
+          },
         },
         {
           listen: "test",
@@ -231,60 +243,72 @@ class PostmanCollectionGenerator {
               "    console.error('Response:', pm.response.text());",
               "} else if (pm.response.code >= 200 && pm.response.code < 300) {",
               "    console.log('✓ Request successful');",
-              "}"
-            ]
-          }
-        }
+              "}",
+            ],
+          },
+        },
       ],
       variable: [
         {
           key: "base_url",
           value: "api.devrev.ai",
-          type: "string"
-        }
-      ]
+          type: "string",
+        },
+      ],
     };
   }
 
   async writeOutput(workspace, megaCollection, environments) {
     // Write workspace file (recommended)
-    const workspacePath = path.join(this.outputDir, 'DevRev_Complete_Workspace.postman.json');
+    const workspacePath = path.join(
+      this.outputDir,
+      "DevRev_Complete_Workspace.postman.json",
+    );
     await fs.writeJson(workspacePath, workspace, { spaces: 2 });
     console.log(`✓ Generated workspace: ${workspacePath}`);
 
     // Write mega collection file
-    const megaPath = path.join(this.outputDir, 'DevRev_Mega_Collection.postman_collection.json');
+    const megaPath = path.join(
+      this.outputDir,
+      "DevRev_Mega_Collection.postman_collection.json",
+    );
     await fs.writeJson(megaPath, megaCollection, { spaces: 2 });
     console.log(`✓ Generated mega collection: ${megaPath}`);
 
     // Write individual environment files
-    const envOutputDir = path.join(this.outputDir, 'environments');
+    const envOutputDir = path.join(this.outputDir, "environments");
     await fs.ensureDir(envOutputDir);
-    
+
     for (const env of environments) {
-      const envPath = path.join(envOutputDir, `${env.name}.postman_environment.json`);
+      const envPath = path.join(
+        envOutputDir,
+        `${env.name}.postman_environment.json`,
+      );
       await fs.writeJson(envPath, env.data, { spaces: 2 });
       console.log(`✓ Copied environment: ${envPath}`);
     }
 
     // Create import instructions
-    const instructionsPath = path.join(this.outputDir, 'IMPORT_INSTRUCTIONS.md');
+    const instructionsPath = path.join(
+      this.outputDir,
+      "IMPORT_INSTRUCTIONS.md",
+    );
     await this.writeImportInstructions(instructionsPath);
     console.log(`✓ Generated instructions: ${instructionsPath}`);
 
     // Create summary file
-    const summaryPath = path.join(this.outputDir, 'generation-summary.json');
+    const summaryPath = path.join(this.outputDir, "generation-summary.json");
     const summary = {
       generated_at: this.timestamp,
       collections_count: workspace.item.length,
       environments_count: environments.length,
       total_endpoints: this.countEndpoints(workspace),
       files_generated: [
-        'DevRev_Complete_Workspace.postman.json',
-        'DevRev_Mega_Collection.postman_collection.json',
-        'environments/',
-        'IMPORT_INSTRUCTIONS.md'
-      ]
+        "DevRev_Complete_Workspace.postman.json",
+        "DevRev_Mega_Collection.postman_collection.json",
+        "environments/",
+        "IMPORT_INSTRUCTIONS.md",
+      ],
     };
     await fs.writeJson(summaryPath, summary, { spaces: 2 });
     console.log(`✓ Generated summary: ${summaryPath}`);
@@ -368,7 +392,7 @@ Generated on: ${this.timestamp}
 
   countEndpoints(workspace) {
     let total = 0;
-    
+
     function countItems(items) {
       for (const item of items) {
         if (item.request) {
@@ -378,35 +402,39 @@ Generated on: ${this.timestamp}
         }
       }
     }
-    
+
     for (const collection of workspace.item) {
       if (collection.item) {
         countItems(collection.item);
       }
     }
-    
+
     return total;
   }
 
   generateId() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-      const r = Math.random() * 16 | 0;
-      const v = c == 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c == "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      },
+    );
   }
 }
 
 // Run the generator
 if (require.main === module) {
   const generator = new PostmanCollectionGenerator();
-  generator.generateCombinedCollection()
+  generator
+    .generateCombinedCollection()
     .then(() => {
-      console.log('\n🎉 DevRev API collections generated successfully!');
+      console.log("\n🎉 DevRev API collections generated successfully!");
       process.exit(0);
     })
     .catch((error) => {
-      console.error('\n❌ Generation failed:', error);
+      console.error("\n❌ Generation failed:", error);
       process.exit(1);
     });
 }
